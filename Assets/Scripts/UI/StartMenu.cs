@@ -24,17 +24,31 @@ public class StartMenu : MonoBehaviour
 
     }
 
-    public void Menue()
+    public void GOzero()
     {
         SceneManager.LoadScene(0);
     }
-    public void Retry()
+    public void GOone()
     {
         SceneManager.LoadScene(1);
     }
 
-    public void Credit()
+
+     public void GOtwo()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+
+    public void GOthree()
     {
         SceneManager.LoadScene(3);
+    }
+
+    public void Quit ()
+
+    {
+        Application.Quit();
+
     }
 }
