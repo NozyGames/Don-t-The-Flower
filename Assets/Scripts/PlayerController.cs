@@ -7,20 +7,22 @@ public class PlayerController : MonoBehaviour
     private Transform player;
     public int speed = 5;
     public int jumpForce = 5;
-    [SerializeField]
+    public bool interactInput;
+    public bool grabInput;
     private bool onGround;
     [SerializeField]
     private LayerMask layerMask;
     [SerializeField]
     private GameObject grabbedOjb;
-    [SerializeField]
     private bool isGrabbed = false;
+    private float rotemp;
+    [SerializeField]
+    private ParticleSystem[] ps;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
-    private int lookat;
+    private float lookat;
     private int rotate;
-    [SerializeField]
-    private float rotemp;
+    private bool playing;
 
     // Start is called before the first frame update
     void Start()
@@ -38,13 +40,13 @@ public class PlayerController : MonoBehaviour
         if (horizontalInput > 0)
         {
             sr.flipX = false;
-            lookat = 1;
+            lookat = 1.1f;
             rotate = -20;
         }
         if (horizontalInput < 0)
         {
             sr.flipX = true;
-            lookat = -1;
+            lookat = -1.1f;
             rotate = 20;
         }
 
@@ -55,8 +57,9 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
-        bool grabInput = Input.GetButtonDown("Grab");
-        if (grabInput)
+        grabInput = Input.GetButtonDown("Grab");
+        interactInput = Input.GetButton("Interact");
+        if (grabInput && !interactInput)
         {
             if (isGrabbed)
             {
@@ -65,15 +68,16 @@ public class PlayerController : MonoBehaviour
             }
             else Grab();
         }
-        if (isGrabbed) grabbedOjb.transform.position = new Vector3(transform.position.x + lookat, transform.position.y + 1, transform.position.z);
-
-        bool interactInput = Input.GetButtonDown("Interact");
-        if (interactInput) Interact();
-
-#region Interact
-        rotemp -= Time.deltaTime;
-        if (rotemp <= 0 && grabbedOjb != null) grabbedOjb.transform.Rotate(0, 0, 0);
-#endregion
+        if (isGrabbed) grabbedOjb.transform.position = new Vector3(transform.position.x + lookat, transform.position.y + 0.6f, transform.position.z);
+        
+        if (interactInput && grabbedOjb != null) Interact();
+        if (Input.GetButtonUp("Interact") && grabbedOjb != null)
+        {
+            grabbedOjb.transform.rotation = new Quaternion(0, 0, 0, 0);
+            ps[0].Stop(true);
+            playing = false;
+        }
+        ps[0].transform.rotation = Quaternion.Euler(90, 0, 0);
     }
 
     private void Grab()
@@ -93,18 +97,16 @@ public class PlayerController : MonoBehaviour
         switch (goName)
         {
             case "Arrosoire":
-                rotemp = 1;
-                bool temp2 = true;
-                if (temp2)
+                if (!playing)
                 {
-                    grabbedOjb.transform.Rotate(0, 0, rotate);
-                    temp2 = false;
+                    ps[0].Play(true);
+                    playing = true;
                 }
+                grabbedOjb.transform.rotation = Quaternion.Euler(0, 0, rotate);
                 break;
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Ground")) onGround = true;
     }
