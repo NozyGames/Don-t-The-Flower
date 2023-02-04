@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Hugo.unity
+    guid: dfb75cd6aeaed7b4dabe0f3023c887ff
+  - enabled: 1
     path: Assets/Scenes/Valerian.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
