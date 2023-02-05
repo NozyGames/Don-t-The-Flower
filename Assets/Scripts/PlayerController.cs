@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+#region Variables
     private Transform player;
+    private Seed s;
     public int speed = 5;
     public int jumpForce = 5;
     public bool interactInput;
@@ -17,12 +19,13 @@ public class PlayerController : MonoBehaviour
     private bool isGrabbed = false;
     private float rotemp;
     [SerializeField]
-    private ParticleSystem[] ps;
+    public ParticleSystem[] ps;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private float lookat;
     private int rotate;
     private bool playing;
+#endregion
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +66,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isGrabbed)
             {
+                grabbedOjb.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 grabbedOjb = null;
                 isGrabbed = false;
             }
@@ -74,10 +78,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonUp("Interact") && grabbedOjb != null)
         {
             grabbedOjb.transform.rotation = new Quaternion(0, 0, 0, 0);
-            ps[0].Stop(true);
+            foreach (ParticleSystem particules in ps) particules.Stop(true);
             playing = false;
         }
-        ps[0].transform.rotation = Quaternion.Euler(90, 0, 0);
+        foreach (ParticleSystem particules in ps) particules.transform.rotation = Quaternion.Euler(90, 0, 0);
     }
 
     private void Grab()
@@ -87,6 +91,7 @@ public class PlayerController : MonoBehaviour
         if (hit)
         {
             grabbedOjb = hit.collider.gameObject;
+            grabbedOjb.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             isGrabbed = true;
         }
     }
@@ -96,10 +101,42 @@ public class PlayerController : MonoBehaviour
         string goName = grabbedOjb.name;
         switch (goName)
         {
-            case "Arrosoire":
+            case "Watercan":
                 if (!playing)
                 {
                     ps[0].Play(true);
+                    playing = true;
+                }
+                grabbedOjb.transform.rotation = Quaternion.Euler(0, 0, rotate);
+                break;
+            case "Fertilizer":
+                if (!playing)
+                {
+                    ps[1].Play(true);
+                    playing = true;
+                }
+                grabbedOjb.transform.rotation = Quaternion.Euler(0, 0, rotate);
+                break;
+            case "Nuclear":
+                if (!playing)
+                {
+                    ps[2].Play(true);
+                    playing = true;
+                }
+                grabbedOjb.transform.rotation = Quaternion.Euler(0, 0, rotate);
+                break;
+            case "Cigarette":
+                if (!playing)
+                {
+                    ps[3].Play(true);
+                    playing = true;
+                }
+                grabbedOjb.transform.rotation = Quaternion.Euler(0, 0, rotate);
+                break;
+            case "Jerrycan":
+                if (!playing)
+                {
+                    ps[4].Play(true);
                     playing = true;
                 }
                 grabbedOjb.transform.rotation = Quaternion.Euler(0, 0, rotate);
