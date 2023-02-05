@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,14 +17,22 @@ public class Seed : MonoBehaviour
     private bool waiter;
     [SerializeField]
     private float waiterTimer;
-    private Scene current;
+    public SpriteRenderer sr;
+    [SerializeField]
+    private Sprite[] states;
+    [SerializeField]
+    public GameObject seedroot;
+    [SerializeField]
+    private CameraMove cm;
+    [SerializeField]
+    private loosePlant lp;
     // Start is called before the first frame update
     void Start()
     {
         flowerBound = new Bounds(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(transform.position.x, transform.position.y, transform.position.z));
         flowerBound.extents = new Vector2(2, 2);
         waiterTimer = 1;
-        current = SceneManager.GetActiveScene();
+        sr = gameObject.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -69,6 +75,52 @@ public class Seed : MonoBehaviour
         else waiterTimer -= Time.deltaTime;
         if (waiterTimer <= 0) waiter = false;
 
-        if (grow == 2) SceneManager.LoadScene(current.buildIndex);
+        if (grow == 1)
+        {
+            sr.sprite = states[0];
+            transform.position = new Vector3(-62.72f, -0.96f, transform.position.z);
+        }
+        if (grow == 2)
+        {
+            sr.sprite = states[1];
+            lp.loose();
+            grow++;
+        }
+        if (grow == 4)
+        {
+            sr.sprite = states[5];
+            seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[6];
+            transform.position = new Vector3(-62.98f, 2.08f, transform.position.z);
+            seedroot.transform.position = new Vector3(-62.98f, -6.2f, transform.position.z);
+        }
+        if (root == 1)
+        {
+            cm.x = 2;
+            seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[2];
+            cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+        }
+        if (root == 2)
+        {
+            cm.x = 1;
+            seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[3];
+            seedroot.transform.position = new Vector3(seedroot.transform.position.x, -2.18f, transform.position.z);
+            cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+        }
+        if (root == 3)
+        {
+            cm.x = -1;
+            seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[4];
+            seedroot.transform.position = new Vector3(-62.67f, -6.93f, transform.position.z);
+            cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+            pc.grabbedOjb.gameObject.SetActive(false);
+            pc.speed = 0;
+            pc.jumpForce = 0;
+            float temp = 1;
+            temp -= Time.deltaTime;
+            if (temp <= 0)
+            {
+
+            }
+        }
     }
 }

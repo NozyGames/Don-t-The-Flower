@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class loosePlant : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class loosePlant : MonoBehaviour
     private Sprite[] spriteChiottes;
     [SerializeField]
     private Sprite[] spriteShrek;
+    [SerializeField]
+    private Seed seed;
+    [SerializeField]
+    private PlayerController pc;
+    private Scene current;
+    [SerializeField]
+    private float temp;
+    private bool locked;
 
     public float tempsDeMarcheDeShrek = 10;
 
@@ -30,7 +39,10 @@ public class loosePlant : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        chiottes_sprite= chiottes.GetComponent<SpriteRenderer>();
+        locked = false;
+        temp = 1.5f;
+        current = SceneManager.GetActiveScene();
+        chiottes_sprite = chiottes.GetComponent<SpriteRenderer>();
         shrek_sprite= gameObject.GetComponent<SpriteRenderer>();
         anim = gameObject.GetComponent<Animator>();
         hasToMove = false;
@@ -40,7 +52,8 @@ public class loosePlant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (locked) temp -= Time.deltaTime;
+        if (temp <= 0) SceneManager.LoadScene(current.buildIndex);
         if (hasToMove)
         {
             transform.position = transform.position + new Vector3(3 * Time.deltaTime, 0, 0);
@@ -52,6 +65,8 @@ public class loosePlant : MonoBehaviour
         beginTime = Time.fixedTime;
         countTime = true;
         nTours = 0;
+        pc.speed = 0;
+        pc.jumpForce = 0;
     }
 
     private void FixedUpdate()
@@ -93,14 +108,19 @@ public class loosePlant : MonoBehaviour
             }
             if (tempsEcoule >= 7 + tempsDeMarcheDeShrek && nTours == 5)
             {
-                shrek_sprite.sprite = spriteShrek[2];
+                shrek_sprite.sprite = spriteShrek[2];//se baisse
                 grr.PlayOneShot(gre3, 1); grr.PlayOneShot(gre3, 1); grr.PlayOneShot(gre3, 1);
                 nTours++;
             }
             if (tempsEcoule >= 9 + tempsDeMarcheDeShrek && nTours == 6)
             {
-                shrek_sprite.sprite = spriteShrek[3];
+                shrek_sprite.sprite = spriteShrek[3];//arrache
                 nTours++;
+                countTime = false;
+                seed.transform.position = new Vector3(-61.1f, 0.87f, transform.position.z);
+                seed.sr.sortingOrder = 0;
+                if (seed.seedroot.gameObject.activeSelf == true) seed.seedroot.gameObject.SetActive(false);
+                locked = true;
             }
         }
     }

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private LayerMask layerMask;
     [SerializeField]
-    private GameObject grabbedOjb;
+    public GameObject grabbedOjb;
     private bool isGrabbed = false;
     private float rotemp;
     [SerializeField]
@@ -42,13 +42,13 @@ public class PlayerController : MonoBehaviour
 
         if (horizontalInput > 0)
         {
-            sr.flipX = false;
+            sr.flipX = true;
             lookat = 1.1f;
             rotate = -20;
         }
         if (horizontalInput < 0)
         {
-            sr.flipX = true;
+            sr.flipX = false;
             lookat = -1.1f;
             rotate = 20;
         }
