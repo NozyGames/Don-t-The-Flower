@@ -17,6 +17,7 @@ public class Seed : MonoBehaviour
     private bool waiter;
     [SerializeField]
     private float waiterTimer;
+    [SerializeField]
     public SpriteRenderer sr;
     [SerializeField]
     private Sprite[] states;
@@ -26,9 +27,12 @@ public class Seed : MonoBehaviour
     private CameraMove cm;
     [SerializeField]
     private loosePlant lp;
+    [SerializeField]
+    private float temp;
     // Start is called before the first frame update
     void Start()
     {
+        temp = 1;
         flowerBound = new Bounds(new Vector3(transform.position.x, transform.position.y, transform.position.z), new Vector3(transform.position.x, transform.position.y, transform.position.z));
         flowerBound.extents = new Vector2(2, 2);
         waiterTimer = 1;
@@ -90,36 +94,40 @@ public class Seed : MonoBehaviour
         {
             sr.sprite = states[5];
             seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[6];
-            transform.position = new Vector3(-62.98f, 2.08f, transform.position.z);
+            transform.position = new Vector3(-62.98f, 1.23f, transform.position.z);
             seedroot.transform.position = new Vector3(-62.98f, -6.2f, transform.position.z);
         }
         if (root == 1)
         {
-            cm.x = 2;
+            cm.x = 1;
             seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[2];
-            cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+            if (cm.gameObject.transform.position.x <= -59) cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+            else cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, 2, cm.gameObject.transform.position.z);
         }
         if (root == 2)
         {
-            cm.x = 1;
+            cm.x = 0;
             seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[3];
             seedroot.transform.position = new Vector3(seedroot.transform.position.x, -2.18f, transform.position.z);
-            cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+            if (cm.gameObject.transform.position.x <= -59) cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+            else cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, 2, cm.gameObject.transform.position.z);
         }
         if (root == 3)
         {
-            cm.x = -1;
+            cm.x = -2;
             seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[4];
             seedroot.transform.position = new Vector3(-62.67f, -6.93f, transform.position.z);
-            cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
-            pc.grabbedOjb.gameObject.SetActive(false);
+            if (cm.gameObject.transform.position.x <= -59) cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, cm.x, cm.gameObject.transform.position.z);
+            else cm.gameObject.transform.position = new Vector3(cm.gameObject.transform.position.x, 2, cm.gameObject.transform.position.z);
+            if(pc.grabbedOjb != null) pc.grabbedOjb.gameObject.SetActive(false);
             pc.speed = 0;
             pc.jumpForce = 0;
-            float temp = 1;
             temp -= Time.deltaTime;
-            if (temp <= 0)
+            if (temp <= 0) pc.sr.sprite = states[7];
+            if (temp <= -2)
             {
-
+                pc.gameObject.SetActive(false);
+                grow = 4;
             }
         }
     }

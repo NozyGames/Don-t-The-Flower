@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 #region Variables
     private Transform player;
     private Seed s;
+    private float horizontalInput;
     public int speed = 5;
     public int jumpForce = 5;
     public bool interactInput;
@@ -21,15 +22,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     public ParticleSystem[] ps;
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
+    public SpriteRenderer sr;
     private float lookat;
     private int rotate;
     private bool playing;
+    private float security;
 #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        security = 0.7f;
         rb = this.gameObject.GetComponent<Rigidbody2D>();
         sr = this.gameObject.GetComponent<SpriteRenderer>();
     }
@@ -37,7 +40,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
+        security -= Time.deltaTime;
+        if (security <= 0 && transform.position.y < -0.51)
+        {
+            security = 0.7f;
+            onGround = true;
+        }
+        horizontalInput = Input.GetAxis("Horizontal");
         transform.Translate(Vector2.right * horizontalInput * speed * Time.deltaTime, 0);
 
         if (horizontalInput > 0)
@@ -45,12 +54,14 @@ public class PlayerController : MonoBehaviour
             sr.flipX = true;
             lookat = 1.1f;
             rotate = -20;
+            if (grabbedOjb != null) grabbedOjb.GetComponent<SpriteRenderer>().flipX = false;
         }
         if (horizontalInput < 0)
         {
             sr.flipX = false;
             lookat = -1.1f;
             rotate = 20;
+            if(grabbedOjb != null) grabbedOjb.GetComponent<SpriteRenderer>().flipX = true;
         }
 
         bool jumpInput = Input.GetButton("Jumping");

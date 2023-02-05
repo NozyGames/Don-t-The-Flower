@@ -14,8 +14,8 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     private void Start()
     {
-        countDown = 4.2f;
-        x = 3;
+        countDown = 3.6f;
+        x = 2;
         transform.position = new Vector3(-60, x, -10);
     }
     void Update()
@@ -25,7 +25,7 @@ public class CameraMove : MonoBehaviour
         {
             transform.position = new Vector3(pc.transform.position.x, x, -10);
             pc.speed = 5;
-            pc.jumpForce = 7;
+            pc.jumpForce = 6;
         }
         if (countDown <= 0) locked = true;
         if (pc.transform.position.x >= -53 && locked == false)
