@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private float lookat;
     private int rotate;
     private bool playing;
+    [SerializeField]
+    private GameObject arrow;
 #endregion
 
     // Start is called before the first frame update
@@ -106,6 +108,8 @@ public class PlayerController : MonoBehaviour
             grabbedOjb.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             isGrabbed = true;
         }
+        if (grabbedOjb != null && grabbedOjb.name == "Grabbable") arrow.gameObject.SetActive(false);
+        else return;
     }
 
     private void Interact()
