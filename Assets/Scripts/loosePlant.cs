@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class loosePlant : MonoBehaviour
 {
     [SerializeField]
-    private GameObject chiottes;
-    private SpriteRenderer chiottes_sprite;
+    private GameObject toilettes;
+    private SpriteRenderer toilettes_sprite;
     private SpriteRenderer shrek_sprite;
     [SerializeField]
     private Sprite[] spriteChiottes;
@@ -42,7 +42,7 @@ public class loosePlant : MonoBehaviour
         locked = false;
         temp = 1.5f;
         current = SceneManager.GetActiveScene();
-        chiottes_sprite = chiottes.GetComponent<SpriteRenderer>();
+        toilettes_sprite = toilettes.GetComponent<SpriteRenderer>();
         shrek_sprite= gameObject.GetComponent<SpriteRenderer>();
         anim = gameObject.GetComponent<Animator>();
         hasToMove = false;
@@ -83,14 +83,14 @@ public class loosePlant : MonoBehaviour
 
             if(tempsEcoule >= 2 && nTours == 1)
             {
-                chiottes_sprite.sprite = spriteChiottes[1];
+                toilettes_sprite.sprite = spriteChiottes[1];
                 shrek_sprite.enabled = true;
                 nTours++;
             }
 
             if (tempsEcoule >= 4 && nTours == 2)
             {
-                chiottes_sprite.sprite = spriteChiottes[0];
+                toilettes_sprite.sprite = spriteChiottes[0];
                 shrek_sprite.sprite = spriteShrek[1];
                 nTours++;
             }
@@ -117,7 +117,7 @@ public class loosePlant : MonoBehaviour
                 shrek_sprite.sprite = spriteShrek[3];//arrache
                 nTours++;
                 countTime = false;
-                seed.transform.position = new Vector3(-61.1f, 0.87f, transform.position.z);
+                seed.transform.position = new Vector3(-61.1f, 0.19f, transform.position.z);
                 seed.sr.sortingOrder = 0;
                 if (seed.seedroot.gameObject.activeSelf == true) seed.seedroot.gameObject.SetActive(false);
                 locked = true;

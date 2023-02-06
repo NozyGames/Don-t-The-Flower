@@ -82,7 +82,7 @@ public class Seed : MonoBehaviour
         if (grow == 1)
         {
             sr.sprite = states[0];
-            transform.position = new Vector3(-62.72f, -0.96f, transform.position.z);
+            transform.position = new Vector3(-62.72f, -1.64f, transform.position.z);
         }
         if (grow == 2)
         {
@@ -92,10 +92,11 @@ public class Seed : MonoBehaviour
         }
         if (grow == 4)
         {
+            root = 0;
             sr.sprite = states[5];
             seedroot.gameObject.GetComponent<SpriteRenderer>().sprite = states[6];
-            transform.position = new Vector3(-62.98f, 1.23f, transform.position.z);
-            seedroot.transform.position = new Vector3(-62.98f, -6.2f, transform.position.z);
+            transform.position = new Vector3(-62.98f, 1.13f, transform.position.z);
+            seedroot.transform.position = new Vector3(-62.98f, -7.02f, transform.position.z);
         }
         if (root == 1)
         {
