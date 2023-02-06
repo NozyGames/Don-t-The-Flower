@@ -30,7 +30,9 @@ public class StartMenu : MonoBehaviour
     }
     public void GOone()
     {
+
         SceneManager.LoadScene(1);
+        Time.timeScale = 1;
     }
 
 
