@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class SettingsWindow : MonoBehaviour
 {
+
+    public GameObject optionsMenu;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -18,14 +21,14 @@ public class SettingsWindow : MonoBehaviour
     public void Open()
 
     {
-        transform.LeanScale(Vector2.one, 0.8f);
+        optionsMenu.SetActive(true);
 
     }
 
     public void Clos()
 
     {
-        transform.LeanScale(Vector2.zero, 1f).setEaseInBack();
+        optionsMenu.SetActive(false);
 
     }
     // Update is called once per frame
